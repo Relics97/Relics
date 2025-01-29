@@ -1,0 +1,50 @@
+[package]
+name = "seints_row"
+version = "0.1.0"
+authors = ["Mr.Minter"]
+edition = "2025"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+panic = 'abort'
+incremental = false
+overflow-checks = true
+
+[features]
+# Use library feature to disable all instantiate/execute/query exports
+library = []
+
+[package.metadata.scripts]
+optimize = """docker run --rm -v "$(pwd)":/code \
+  --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  cosmwasm/optimizer:0.12.13
+"""
+
+[dependencies]
+cosmwasm-schema = "2.2.0"
+cosmwasm-std = { version = "2.2.0", features = ["cosmwasm_1_4", "std"] }
+cw-storage-plus = "2.0.0"
+cw2 = "2.0.0"
+schemars = "0.8.16"
+serde = { version = "1.0.197", default-features = false, features = ["derive", "std"] }
+thiserror = { version = "1.0.58" }
+
+[dev-dependencies]
+cosmwasm-schema = "2.2.0"
+cosmwasm-storage = "2.0.0"
+cw-multi-test = "2.0.0"
+
+[alias]
+wasm = "build --release --lib --target wasm32-unknown-unknown"
+unit-test = "test --lib"
+schema = "run --bin schema"
+integration-test = "test --lib integration_tests"
