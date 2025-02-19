@@ -1,8 +1,21 @@
-pub mod contract;      // The core contract logic (instantiating, executing, querying).
-mod error;             // Error handling (your custom errors like ContractError).
-pub mod helpers;       // Helper functions or types (like your `CwTemplateContract`).
-{% unless minimal %}pub mod integration_tests; // Conditional inclusion of integration tests based on a feature.
-pub mod msg;           // The messages for interacting with the contract (InstantiateMsg, ExecuteMsg, etc.).
-pub mod state;         // The contract's storage state, often including global variables like balances.
+/// Core contract logic, including instantiation, execution, and query handlers.
+pub mod contract;
 
-pub use crate::error::ContractError; // Re-exporting the `ContractError` for easy access in other modules.
+/// Error handling for the contract, defining custom errors like `ContractError`.
+mod error;
+
+/// Helper functions and types to simplify interactions with the contract.
+pub mod helpers;
+
+/// Integration tests to validate the contract's functionality in a simulated blockchain environment.
+#[cfg(not(feature = "minimal"))]
+pub mod integration_tests;
+
+/// Messages used to interact with the contract, such as `InstantiateMsg`, `ExecuteMsg`, and `QueryMsg`.
+pub mod msg;
+
+/// The contract's storage state, including global variables like balances and metadata.
+pub mod state;
+
+/// Re-export `ContractError` for easy access in other modules.
+pub use crate::error::ContractError;
