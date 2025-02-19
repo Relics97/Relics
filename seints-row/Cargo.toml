@@ -21,6 +21,8 @@ overflow-checks = true
 [features]
 # Use library feature to disable all instantiate/execute/query exports
 library = []
+# Minimal feature for lightweight builds
+minimal = []
 
 [package.metadata.scripts]
 optimize = """docker run --rm -v "$(pwd)":/code \
@@ -37,6 +39,7 @@ cw2 = "2.0.0"
 schemars = "0.8.16"
 serde = { version = "1.0.197", default-features = false, features = ["derive", "std"] }
 thiserror = { version = "1.0.58" }
+url = "2.5.0"
 
 [dev-dependencies]
 cosmwasm-schema = "2.2.0"
